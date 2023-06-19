@@ -1,8 +1,8 @@
 package aggregation
 
 import (
-	"github.com/grafadruid/go-druid/builder"
-	"github.com/grafadruid/go-druid/builder/filter"
+	"github.com/jonah-rankin/go-druid/builder"
+	"github.com/jonah-rankin/go-druid/builder/filter"
 	"testing"
 
 	"github.com/stretchr/testify/assert"

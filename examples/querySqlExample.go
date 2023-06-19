@@ -5,8 +5,8 @@ package main
 
 import (
 	"github.com/davecgh/go-spew/spew"
-	"github.com/grafadruid/go-druid"
-	"github.com/grafadruid/go-druid/builder/query"
+	"github.com/jonah-rankin/go-druid"
+	"github.com/jonah-rankin/go-druid/builder/query"
 	"log"
 )
 

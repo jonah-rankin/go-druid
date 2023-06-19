@@ -3,8 +3,8 @@ package dimension
 import (
 	"encoding/json"
 
-	"github.com/grafadruid/go-druid/builder"
-	"github.com/grafadruid/go-druid/builder/lookup"
+	"github.com/jonah-rankin/go-druid/builder"
+	"github.com/jonah-rankin/go-druid/builder/lookup"
 )
 
 type Lookup struct {

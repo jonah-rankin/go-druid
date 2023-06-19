@@ -1,7 +1,7 @@
 package postaggregation
 
 import (
-	"github.com/grafadruid/go-druid/builder"
+	"github.com/jonah-rankin/go-druid/builder"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
