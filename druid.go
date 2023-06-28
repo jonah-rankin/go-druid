@@ -67,6 +67,7 @@ type clientOptions struct {
 	retryWaitMin time.Duration
 	retryWaitMax time.Duration
 	retryMax     int
+	polarisOrg   string
 }
 
 type ClientOption func(*clientOptions)
