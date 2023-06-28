@@ -28,6 +28,8 @@ const (
 	defaultRetryWaitMin          = 100 * time.Millisecond
 	defaultRetryWaitMax          = 3 * time.Second
 	defaultRetryMax              = 5
+	defaultPolarisOrg            = nil
+	defaultPolarisApiKe          = nil
 )
 
 var (
@@ -56,15 +58,17 @@ type Client struct {
 }
 
 type clientOptions struct {
-	httpClient   *http.Client
-	username     string
-	password     string
-	backoff      retryablehttp.Backoff
-	errorHandler retryablehttp.ErrorHandler
-	retry        retryablehttp.CheckRetry
-	retryWaitMin time.Duration
-	retryWaitMax time.Duration
-	retryMax     int
+	httpClient        *http.Client
+	username          string
+	password          string
+	backoff           retryablehttp.Backoff
+	errorHandler      retryablehttp.ErrorHandler
+	retry             retryablehttp.CheckRetry
+	retryWaitMin      time.Duration
+	retryWaitMax      time.Duration
+	retryMax          int
+	polarisOrg        string
+	polarisConnection bool
 }
 
 type ClientOption func(*clientOptions)
@@ -85,6 +89,7 @@ func NewClient(baseURL string, options ...ClientOption) (*Client, error) {
 		retryWaitMin: defaultRetryWaitMin,
 		retryWaitMax: defaultRetryWaitMax,
 		retryMax:     defaultRetryMax,
+		polarisOrg:   defaultPolarisOrg,
 	}
 	for _, opt := range options {
 		opt(opts)
@@ -98,9 +103,11 @@ func NewClient(baseURL string, options ...ClientOption) (*Client, error) {
 			RetryWaitMax: opts.retryWaitMax,
 			RetryMax:     opts.retryMax,
 		},
-		username:  opts.username,
-		password:  opts.password,
-		basicAuth: opts.username != "" && opts.password != "",
+		username:          opts.username,
+		password:          opts.password,
+		basicAuth:         opts.username != "" && opts.password != "",
+		polarisOrg:        opts.polarisOrg,
+		polarisConnection: opts.polarisOrg != nil,
 	}
 	if err := c.setBaseURL(baseURL); err != nil {
 		return nil, err
