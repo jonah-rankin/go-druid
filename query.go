@@ -21,7 +21,7 @@ func (q *QueryService) Execute(qry builder.Query, result interface{}, headers ..
 	var path string
 	switch qry.Type() {
 	case "sql":
-		if q.client.options.polarisConnection {
+		if q.client.polarisConnection {
 			path = PolarisSQLQueryEndpoint
 		} else {
 			path = SQLQueryEndpoint

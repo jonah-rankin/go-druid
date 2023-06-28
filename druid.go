@@ -48,26 +48,25 @@ var (
 )
 
 type Client struct {
-	http      *retryablehttp.Client
-	baseURL   *url.URL
-	username  string
-	password  string
-	basicAuth bool
-	options   *clientOptions
+	http              *retryablehttp.Client
+	baseURL           *url.URL
+	username          string
+	password          string
+	basicAuth         bool
+	polarisOrg        string
+	polarisConnection bool
 }
 
 type clientOptions struct {
-	httpClient        *http.Client
-	username          string
-	password          string
-	backoff           retryablehttp.Backoff
-	errorHandler      retryablehttp.ErrorHandler
-	retry             retryablehttp.CheckRetry
-	retryWaitMin      time.Duration
-	retryWaitMax      time.Duration
-	retryMax          int
-	polarisOrg        string
-	polarisConnection bool
+	httpClient   *http.Client
+	username     string
+	password     string
+	backoff      retryablehttp.Backoff
+	errorHandler retryablehttp.ErrorHandler
+	retry        retryablehttp.CheckRetry
+	retryWaitMin time.Duration
+	retryWaitMax time.Duration
+	retryMax     int
 }
 
 type ClientOption func(*clientOptions)
@@ -81,18 +80,25 @@ type druidErrorReponse struct {
 
 func NewClient(baseURL string, options ...ClientOption) (*Client, error) {
 	opts := &clientOptions{
-		httpClient:        defaultHTTPClient(),
-		backoff:           defaultBackoff,
-		errorHandler:      defaultErrorHandler,
-		retry:             defaultRetry,
-		retryWaitMin:      defaultRetryWaitMin,
-		retryWaitMax:      defaultRetryWaitMax,
-		retryMax:          defaultRetryMax,
-		polarisConnection: options.polarisOrg != "",
+		httpClient:   defaultHTTPClient(),
+		backoff:      defaultBackoff,
+		errorHandler: defaultErrorHandler,
+		retry:        defaultRetry,
+		retryWaitMin: defaultRetryWaitMin,
+		retryWaitMax: defaultRetryWaitMax,
+		retryMax:     defaultRetryMax,
 	}
 	for _, opt := range options {
 		opt(opts)
 	}
+
+	polarisOrg := ""
+	if opts.polarisOrg != nil {
+		polarisOrg = *opts.polarisOrg
+	}
+
+	polarisConnection := polarisOrg != ""
+
 	c := &Client{
 		http: &retryablehttp.Client{
 			Backoff:      opts.backoff,
@@ -102,10 +108,11 @@ func NewClient(baseURL string, options ...ClientOption) (*Client, error) {
 			RetryWaitMax: opts.retryWaitMax,
 			RetryMax:     opts.retryMax,
 		},
-		username:  opts.username,
-		password:  opts.password,
-		basicAuth: opts.username != "" && opts.password != "",
-		options:   opts,
+		username:          opts.username,
+		password:          opts.password,
+		basicAuth:         opts.username != "" && opts.password != "",
+		polarisConnection: polarisConnection,
+		polarisOrg:        polarisOrg,
 	}
 	if err := c.setBaseURL(baseURL); err != nil {
 		return nil, err
