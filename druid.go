@@ -93,13 +93,6 @@ func NewClient(baseURL string, options ...ClientOption) (*Client, error) {
 		opt(opts)
 	}
 
-	polarisOrg := ""
-	if opts.polarisOrg != nil {
-		polarisOrg = *opts.polarisOrg
-	}
-
-	polarisConnection := polarisOrg != ""
-
 	c := &Client{
 		http: &retryablehttp.Client{
 			Backoff:      opts.backoff,
@@ -112,8 +105,8 @@ func NewClient(baseURL string, options ...ClientOption) (*Client, error) {
 		username:          opts.username,
 		password:          opts.password,
 		basicAuth:         opts.username != "" && opts.password != "",
-		polarisConnection: polarisConnection,
-		polarisOrg:        polarisOrg,
+		polarisConnection: opts.polarisOrg !== "",
+		polarisOrg:        opts.polarisOrg,
 	}
 	if err := c.setBaseURL(baseURL); err != nil {
 		return nil, err
