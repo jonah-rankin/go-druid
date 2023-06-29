@@ -344,6 +344,12 @@ func WithRetryMax(retryMax int) ClientOption {
 	}
 }
 
+func WithPolarisOrg(name string) ClientOption {
+	return func(opts *clientOptions) {
+		opts.polarisOrg = name
+	}
+}
+
 type Response struct {
 	*http.Response
 }
