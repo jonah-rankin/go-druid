@@ -53,7 +53,6 @@ type Client struct {
 	username          string
 	password          string
 	basicAuth         bool
-	polarisOrg        string
 	polarisConnection bool
 }
 
@@ -67,7 +66,6 @@ type clientOptions struct {
 	retryWaitMin time.Duration
 	retryWaitMax time.Duration
 	retryMax     int
-	polarisOrg   string
 }
 
 type ClientOption func(*clientOptions)
@@ -105,8 +103,7 @@ func NewClient(baseURL string, options ...ClientOption) (*Client, error) {
 		username:          opts.username,
 		password:          opts.password,
 		basicAuth:         opts.username != "" && opts.password != "",
-		polarisConnection: opts.polarisOrg != "",
-		polarisOrg:        opts.polarisOrg,
+		polarisConnection: opts.polarisConnection,
 	}
 	if err := c.setBaseURL(baseURL); err != nil {
 		return nil, err
@@ -344,9 +341,9 @@ func WithRetryMax(retryMax int) ClientOption {
 	}
 }
 
-func WithPolarisOrg(name string) ClientOption {
+func WithPolarisConnection(usePolaris bool) ClientOption {
 	return func(opts *clientOptions) {
-		opts.polarisOrg = name
+		opts.polarisConnection = usePolaris
 	}
 }
 
