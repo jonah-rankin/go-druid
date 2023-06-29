@@ -105,7 +105,7 @@ func NewClient(baseURL string, options ...ClientOption) (*Client, error) {
 		username:          opts.username,
 		password:          opts.password,
 		basicAuth:         opts.username != "" && opts.password != "",
-		polarisConnection: opts.polarisOrg !== "",
+		polarisConnection: opts.polarisOrg != "",
 		polarisOrg:        opts.polarisOrg,
 	}
 	if err := c.setBaseURL(baseURL); err != nil {
