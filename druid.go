@@ -57,15 +57,16 @@ type Client struct {
 }
 
 type clientOptions struct {
-	httpClient   *http.Client
-	username     string
-	password     string
-	backoff      retryablehttp.Backoff
-	errorHandler retryablehttp.ErrorHandler
-	retry        retryablehttp.CheckRetry
-	retryWaitMin time.Duration
-	retryWaitMax time.Duration
-	retryMax     int
+	httpClient        *http.Client
+	username          string
+	password          string
+	backoff           retryablehttp.Backoff
+	errorHandler      retryablehttp.ErrorHandler
+	retry             retryablehttp.CheckRetry
+	retryWaitMin      time.Duration
+	retryWaitMax      time.Duration
+	retryMax          int
+	polarisConnection bool
 }
 
 type ClientOption func(*clientOptions)
